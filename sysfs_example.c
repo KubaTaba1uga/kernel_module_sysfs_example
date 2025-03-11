@@ -17,13 +17,14 @@ MODULE_DESCRIPTION("a simple LKM showing how expose your data via sysfs");
 MODULE_LICENSE("Dual MIT/GPL");
 MODULE_VERSION("0.1");
 
-// We need this declaration to create and destroy kobj
+// We need this declaration to create and destroy kobj.
+// We need kobj to expose it via sysfs and with it our custom data.
 static struct kobject *my_kobj;
-static char my_value[32] = "default_value";
+static int counter = 0;
 
 static ssize_t my_show(struct kobject *kobj, struct kobj_attribute *attr,
                        char *buf) {
-  return sprintf(buf, "%s\n", my_value);
+  return sprintf(buf, "%d\n", counter++);
 }
 
 static struct kobj_attribute my_attr = __ATTR(my_attr, 0440, my_show, NULL);
@@ -37,6 +38,8 @@ static int __init sysfs_example_init(void) {
   if (!my_kobj)
     return -ENOMEM;
 
+  // This function creates file for our attribute, it bounds kobj and
+  //   kobj_attribute together.
   return sysfs_create_file(my_kobj, &my_attr.attr);
 }
 
