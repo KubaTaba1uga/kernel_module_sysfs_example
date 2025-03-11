@@ -32,8 +32,9 @@ static struct kobj_attribute my_attr = __ATTR(my_attr, 0440, my_show, NULL);
 static int __init sysfs_example_init(void) {
   pr_info("Inserted\n");
 
-  // "my_kobject" is name under which obj will be exposed under:
-  //   /sys/kernel/
+  // "my_kobject" is name under which obj will be exposed under sysfs.
+  //  kernel_kobj is parent it stands for  /sys/kernel/. If set to
+  //  NULL kobj will be created under /sys/my_kobject.
   my_kobj = kobject_create_and_add("my_kobject", kernel_kobj);
   if (!my_kobj)
     return -ENOMEM;
