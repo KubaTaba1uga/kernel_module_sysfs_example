@@ -1,47 +1,33 @@
-# show_vas_info
+# sysfs_example
 
-This Linux Kernel Module displays key information about the system's Virtual Address Space (VAS). It prints details for both kernel memory regions and the current process's user space regions.
+A minimal Linux kernel module that demonstrates sysfs integration.
 
-## Features
+## Overview
 
-- **Kernel VAS Information**  
-  Displays addresses and sizes for:
-  - Fixed address region (e.g., `FIXADDR_START`)
-  - Kernel module area (`MODULES_VADDR` to `MODULES_END`)
-  - Vmalloc area (`VMALLOC_START` to `VMALLOC_END`)
-  - Direct RAM mapping (`PAGE_OFFSET` to `high_memory`)
+Creates a sysfs entry at `/sys/kernel/my_kobject` with a read-only attribute `my_attr`.
 
-- **User VAS Information**  
-  Reports details of the current process including:
-  - Arguments section (`arg_start` to `arg_end`)
-  - Environment section (`env_start` to `env_end`)
-  - Heap, data, and text segments
+## Build & Usage
 
-## Building
+- **Build:**  
+  ```bash
+  make
+  ```
 
-Ensure you have the required build tools and kernel headers installed, then compile the module with:
+- **Load Module:**  
+  ```bash
+  sudo insmod sysfs_example.ko
+  ```
 
-```bash
-make
-```
+- **Verify Attribute:**  
+  ```bash
+  cat /sys/kernel/my_kobject/my_attr
+  ```
 
-## Usage
-
-1. **Load the Module**  
-   ```bash
-   sudo insmod show_vas_info.ko
-   ```
-2. **View the Kernel Logs**  
-   Use `dmesg` to see the output:
-   ```bash
-   dmesg | tail
-   ```
-3. **Unload the Module**  
-   ```bash
-   sudo rmmod show_vas_info
-   ```
+- **Unload Module:**  
+  ```bash
+  sudo rmmod sysfs_example
+  ```
 
 ## License
 
 Dual MIT/GPL
-
